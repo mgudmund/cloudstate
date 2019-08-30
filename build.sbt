@@ -162,10 +162,13 @@ commands ++= Seq(
   buildProxyCommand("InMemory", `proxy-core`, "in-memory", Some("in-memory.conf"), false),
   buildProxyCommand("Cassandra", `proxy-cassandra`, "cassandra", None, true),
   buildProxyCommand("Cassandra", `proxy-cassandra`, "cassandra", None, false),
-  Command.single("dockerBuildAll", buildProxyHelp("dockerBuildAll", "all")) { (state, command) =>
+  Command.single("dockerBuildAllNonNative", buildProxyHelp("dockerBuildAllNonNative", "all non native")) { (state, command) =>
     List("DevMode", "NoJournal", "InMemory", "Cassandra")
-      .flatMap(c => List(c, s"Native$c"))
       .map(c => s"dockerBuild$c $command") ::: state
+  },
+  Command.single("dockerBuildAllNative", buildProxyHelp("dockerBuildAllNative", "all native")) { (state, command) =>
+    List("DevMode", "NoJournal", "InMemory", "Cassandra")
+      .map(c => s"dockerBuildNative$c $command") ::: state
   }
 )
 

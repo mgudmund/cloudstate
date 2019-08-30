@@ -32,7 +32,7 @@ jobs:
   
   - stage: Deploy
     name: Deploy documentation to cloudstate.io
-    if: branch = documentation
+    if: branch = master
     script: sbt docs/paradox
     deploy:
       provider: pages
@@ -45,19 +45,15 @@ jobs:
       email: deploy@cloudstate.io
       name: CloudState Deployment Bot
       on:
-        branch: documentation
-  
-  - name: Build docker images
-    if: tag IS blank
-    script: sbt "dockerBuildNativeDevMode publishLocal"
+        branch: master
   
   - name: Publish docker images
     if: tag =~ /^v*/
     script:
     - echo "$DOCKER_PASSWORD" | docker login -u cloudstatebot --password-stdin
-    - sbt "set concurrentRestrictions in Global += Tags.limitAll(1)" "dockerBuildAll publish" operator/docker:publish
+    - sbt "set concurrentRestrictions in Global += Tags.limitAll(1)" "dockerBuildAllNonNative publish" operator/docker:publish
   
-    - name: Upload CloudState descriptor
+  - name: Upload CloudState descriptor
     if: tag =~ /^v*/
     script: sbt operator/compileK8sDescriptor
     deploy:
