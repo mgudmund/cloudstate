@@ -54,7 +54,8 @@ jobs:
   - name: Upload CloudState descriptor
     if: tag =~ /^v*/
     script: sbt operator/compileK8sDescriptor
-    provider: releases
+    deploy:
+      provider: releases
       api_key: "$GITHUB_TOKEN"
       file: "operator/cloudstate-${TRAVIS_TAG:1}.yaml"
       skip_cleanup: true
