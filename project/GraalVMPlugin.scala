@@ -1,7 +1,6 @@
 import java.io.ByteArrayInputStream
 import java.security.MessageDigest
 import java.util.Base64
-import java.util.concurrent.TimeUnit
 
 import sbt._
 import sbt.Keys._
@@ -122,7 +121,7 @@ object GraalVMPlugin extends AutoPlugin {
       }
       Seq(NativeImageCommand) ++ nativeImageArguments
     }
-    runProcess(command, targetDirectory) match {
+    sys.process.Process(command, targetDirectory) ! log match {
       case 0 => targetDirectory / binaryName
       case x => sys.error(s"Failed to run $command, exit status: " + x)
     }
@@ -153,26 +152,12 @@ object GraalVMPlugin extends AutoPlugin {
       s"-H:Name=$binaryName"
     ) ++ extraOptions ++ Seq(className)
 
-    runProcess(command, targetDirectory) match {
+    sys.process.Process(command) ! streams.log match {
       case 0 => outputFile
       case x => sys.error(s"Failed to run $command, exit status: " + x)
     }
   }
 
-  // Travis times out if there's no log output for 10 minutes, so we need to print something out every so often
-  // so that doesn't happen.git c
-  def runProcess(command: Seq[String], wd: File) = {
-    val pb = new ProcessBuilder(command: _*)
-    pb.directory(wd)
-    pb.inheritIO()
-    val process = pb.start()
-    val startTime = System.currentTimeMillis()
-    while (!process.waitFor(1, TimeUnit.MINUTES)) {
-      println(((System.currentTimeMillis() - startTime) / 60000) + " minutes elapsed  \r")
-    }
-    process.exitValue()
-  }
-  
   /**
     * This can be used to build a custom build image starting from a custom base image. Can be used like so:
     *
