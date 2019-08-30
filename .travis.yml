@@ -6,25 +6,29 @@ env:
 
 jobs:
   include:
-    - stage: unit-test
+    - stage: Unit tests
+      name: npm tests
       before_script:
       - cd node-support && npm install && cd -
       - cd samples/js-shopping-cart && npm install && cd -
       script:
       - cd node-support && npm test && cd -
       - cd samples/js-shopping-cart && npm test && cd -
-    - before_script:
+    - name: sbt tests
+      before_script:
       - sbt update
       script:
       - sbt 'set concurrentRestrictions in Global += Tags.limitAll(1)' test docs/paradox
-    - stage: tck
+    - stage: TCK
+      name: Run TCK against reference implementation
       before_script:
       - sbt update
       - cd node-support && npm install && cd -
       - cd samples/js-shopping-cart && npm install && cd -
       script:
           - sbt 'set concurrentRestrictions in Global += Tags.limitAll(1)' tck/it:test
-    - stage: deploy
+    - stage: Deploy
+      name: Deploy documentation to cloudstate.io
       script: sbt docs/paradox
       deploy:
         provider: pages
