@@ -29,6 +29,7 @@ jobs:
     - cd samples/js-shopping-cart && npm install && cd -
     script:
     - sbt 'set concurrentRestrictions in Global += Tags.limitAll(1)' tck/it:test
+  
   - stage: Deploy
     name: Deploy documentation to cloudstate.io
     if: branch = documentation
@@ -43,15 +44,20 @@ jobs:
       keep_history: true
       email: deploy@cloudstate.io
       name: CloudState Deployment Bot
+      on:
+        branch: documentation
+  
   - name: Build docker images
     if: tag IS blank
-    script: sbt "dockerBuildDevMode publishLocal"
+    script: sbt "dockerBuildNativeDevMode publishLocal"
+  
   - name: Publish docker images
     if: tag =~ /^v*/
     script:
     - echo "$DOCKER_PASSWORD" | docker login -u cloudstatebot --password-stdin
     - sbt "set concurrentRestrictions in Global += Tags.limitAll(1)" "dockerBuildAll publish" operator/docker:publish
-  - name: Upload CloudState descriptor
+  
+    - name: Upload CloudState descriptor
     if: tag =~ /^v*/
     script: sbt operator/compileK8sDescriptor
     deploy:
@@ -59,6 +65,8 @@ jobs:
       api_key: "$GITHUB_TOKEN"
       file: "operator/cloudstate-${TRAVIS_TAG:1}.yaml"
       skip_cleanup: true
+      on:
+        tags: true
 
 cache:
   directories:
