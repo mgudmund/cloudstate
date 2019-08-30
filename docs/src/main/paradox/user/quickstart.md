@@ -1,4 +1,4 @@
-# Quick start
+# Quickstart
 
 Quickstart to install and deploy your first CloudState based application.
 

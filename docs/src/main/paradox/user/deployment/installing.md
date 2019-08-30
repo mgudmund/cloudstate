@@ -1,4 +1,4 @@
-# Installing CloudState
+# Installing
 
 * Explain prerequisites
 * Explain the requirements of the operator, RBAC etc

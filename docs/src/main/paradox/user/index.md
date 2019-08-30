@@ -1,6 +1,8 @@
-# CloudState user documentation
+# Using CloudState
 
 Documentation for CloudState users.
+
+@@toc
 
 @@@ index
 

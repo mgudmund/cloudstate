@@ -84,8 +84,16 @@ headerSources in Compile ++= {
 }
 
 lazy val root = (project in file("."))
-  .aggregate(`proxy-core`, `proxy-cassandra`, `java-support`, `java-shopping-cart`,`akka-client`, operator, `tck`)
+  .aggregate(`proxy-core`, `proxy-cassandra`, `java-support`, `java-shopping-cart`,`akka-client`, operator, `tck`, docs)
   .settings(common)
+
+lazy val docs = (project in file("docs"))
+  .enablePlugins(ParadoxPlugin)
+  .settings(
+    common,
+    name := "CloudState Documentation",
+    paradoxTheme := Some(builtinParadoxTheme("generic"))
+  )
 
 lazy val proxyDockerBuild = settingKey[Option[(String, Option[String])]]("Docker artifact name and configuration file which gets overridden by the buildProxy command")
 lazy val nativeImageDockerBuild = settingKey[Boolean]("Whether the docker image should be based on the native image or not.")

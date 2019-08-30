@@ -1,4 +1,4 @@
-# CloudState Java support
+# Java
 
 * Explain how to create a CloudState Java project
   - Example Maven `pom.xml`

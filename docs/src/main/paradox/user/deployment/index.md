@@ -1,4 +1,4 @@
-# Deploying CloudState applications
+# Deploying applications
 
 * Explain the supported platforms
 * Explain integration with Istio and/or Knative

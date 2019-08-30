@@ -1,4 +1,4 @@
-# CloudState JavaScript support
+# JavaScript
 
 * Explain how to create a CloudState JavaScript project
   - Example npm `package.json`

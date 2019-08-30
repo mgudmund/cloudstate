@@ -1,4 +1,4 @@
-# CloudState overview
+# Overview
 
 Provide a high level overview of CloudState, the concepts, how the proxy communicates with the user function, manages state, associates commands with entities via entity keys, etc.
 
