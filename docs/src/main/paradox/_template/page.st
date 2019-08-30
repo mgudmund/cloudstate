@@ -130,7 +130,6 @@ $endif$
 <script type="text/javascript" src="$page.base$lib/prettify/prettify.js"></script>
 <script type="text/javascript" src="$page.base$lib/prettify/lang-scala.js"></script>
 <script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
-<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '$page.properties.("project.version")$', '$page.properties.("project.url")$')});</script>
 
 
 </html>
