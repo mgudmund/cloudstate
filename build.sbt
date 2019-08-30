@@ -603,8 +603,10 @@ lazy val `load-generator` = (project in file("samples/js-shopping-cart-load-gene
 
 lazy val `tck` = (project in file("tck"))
   .enablePlugins(AkkaGrpcPlugin)
+  .configs(IntegrationTest)
   .dependsOn(`akka-client`)
   .settings(
+    Defaults.itSettings,
     common,
 
     name := "tck",
@@ -628,9 +630,9 @@ lazy val `tck` = (project in file("tck"))
 
     fork in test := true,
 
-    parallelExecution in Test := false,
+    parallelExecution in IntegrationTest := false,
 
-    executeTests in Test := (executeTests in Test).dependsOn(`proxy-core`/assembly).dependsOn(`java-shopping-cart`/assembly).value
+    executeTests in IntegrationTest := (executeTests in IntegrationTest).dependsOn(`proxy-core`/assembly, `java-shopping-cart`/assembly).value
   )
 
 def doCompileK8sDescriptors(dir: File, targetDir: File, registry: Option[String], username: Option[String], version: String, streams: TaskStreams): File = {
