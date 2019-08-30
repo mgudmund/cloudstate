@@ -537,6 +537,8 @@ lazy val `java-shopping-cart` = (project in file("samples/java-shopping-cart"))
 
     mainClass in Compile := Some("io.cloudstate.samples.shoppingcart.Main"),
 
+    libraryDependencies += "com.google.protobuf" % "protobuf-java" % ProtobufVersion % "protobuf",
+
     akkaGrpcGeneratedLanguages := Seq(AkkaGrpc.Java),
 
     PB.protoSources in Compile ++= {
